@@ -7,7 +7,3 @@ SRC_URI = "git://github.com/siemens/jailhouse.git;protocol=git \
 	"
 
 SRCREV = "81528e48763c8dfc10851c49968eb3d053d4b85c"
-
-#do_configure_append() {
-#    cp -av ${S}/ci/jailhouse-config-banana-pi.h ${S}/hypervisor/include/jailhouse/config.h
-#}
