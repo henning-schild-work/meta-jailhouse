@@ -14,23 +14,11 @@ DEPENDS = "virtual/kernel make-native python-mako-native dtc-native python-mako"
 
 S ="${WORKDIR}/git"
 
-JH_DATADIR="${datadir}/jailhouse"
-CELL_DIR ?= "${JH_DATADIR}/cells"
-CELLCONF_DIR ?= "${JH_DATADIR}/configs"
-INMATES_DIR ?= "${JH_DATADIR}/inmates"
-
-export PACKAGECONFIG_CONFARGS
-
+require jailhouse-dirs.inc
 inherit module pythonnative bash-completion
 
 do_configure() {
-    # Copy all cell configs included through PACKAGECONFIG 
-    for arg in $(echo $PACKAGECONFIG_CONFARGS); do
-        if conf=$(echo $arg | grep -o "with-.*$");
-        then
-           cp "${STAGING_DIR_HOST}/${CELLCONF_DIR}/${conf#with-}.c" ${S}/configs/
-        fi
-    done
+   cp "${STAGING_DIR_HOST}/${CELLCONF_DIR}/"*.c ${S}/configs/
 }
 
 USER_SPACE_CFLAGS = '${CFLAGS} -DLIBEXECDIR=\\\"${libexecdir}\\\" \
@@ -71,12 +59,10 @@ do_install() {
 PACKAGE_BEFORE_PN = "kernel-module-jailhouse"
 FILES_${PN} = "${base_libdir}/firmware ${libexecdir} ${sbindir} ${JH_DATADIR}"
 
-PACKAGECONFIG ??= "freertos-cell freertos-demo1-cell freertos-demo3-cell freertos-ivshmem-demo"
-PACKAGECONFIG[freertos-cell] = \
-       "--with-freertos-cell,,freertos-cell,freertos-cell"
-PACKAGECONFIG[freertos-demo1-cell] = \
-       "--with-freertos-demo1-cell,,freertos-demo1-cell,freertos-demo1-cell"
-PACKAGECONFIG[freertos-demo3-cell] = \
-       "--with-freertos-demo3-cell,,freertos-demo3-cell,freertos-demo3-cell"
-PACKAGECONFIG[freertos-ivshmem-demo] = \
-       "--with-freertos-ivshmem-demo,,freertos-ivshmem-demo,freertos-ivshmem-demo"
+python __anonymous () {
+    # Setup DEPENDS and RDEPENDS to included cells"
+    cells = d.getVar('CELLS', True) or ""
+    for cell in cells.split():
+        d.appendVar('DEPENDS', ' ' + cell)
+        d.appendVar('RDEPENDS_${PN}', ' ' + cell)
+}

@@ -1,11 +1,10 @@
+require recipes-jailhouse/jailhouse/jailhouse-dirs.inc
+
 INMATE ?= ""
 CELLCONFIG ?= ""
 
 INMATE_TARGET ?= "${INMATE}"
 CELLCONFIG_TARGET ?= "${CELLCONFIG}"
-
-INMATES_DIR ?= "${datadir}/jailhouse/inmates"
-CELLCONF_DIR ?= "${datadir}/jailhouse/configs"
 
 do_install() {
     if [ -n "${CELLCONFIG}" ]
@@ -21,4 +20,5 @@ do_install() {
     fi
 }
 
-FILES_${PN} += "${INMATES_DIR} ${CELLCONF_DIR}"
+FILES_${PN}-dev += "${CELLCONF_DIR}"
+FILES_${PN} += "${INMATES_DIR}"
