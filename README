@@ -16,18 +16,12 @@ This layer depends on:
   layers: meta
   branch: master
 
-  URI: git://git.yoctoproject.org/xxxx
-  layers: xxxx
-  branch: master
-
-
 Patches
 =======
 
-Please submit any patches against the jailhouse layer to the
-xxxx mailing list (xxxx@zzzz.org) and cc: the maintainer:
+Please submit any patches against the jailhouse layer to
 
-Maintainer: XXX YYYYYY <xxx.yyyyyy@zzzzz.com>
+Maintainer: Ola Redell <ola.redell@retotech.se>
 
 
 Table of Contents
