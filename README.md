@@ -25,14 +25,15 @@ Maintainers
 * Anders Törnqvist <anders@retotech.se>
 * Jonas Weståker <jonas@retotech.se>
 
-Please submit any patches against this jailhouse layer to
-meta-jailhouse@retotech.se
+Please submit any patches against this jailhouse layer
+via email or https://bitbucket.org/retotech/meta-jailhouse
 
 
 Tested with
 ===========
 
-This layer has been developed for and tested with Bananapi M1 as target.
+* Yocto 2.2
+* This layer has been developed for and tested with Bananapi M1 as target.
 No other targets have been used thus far.
 
 
@@ -66,13 +67,14 @@ to your image recipe, or local.conf:
 
 The jailhouse inmates and cells are by default
 placed under `/usr/share/jailhouse/{inmates,cells}`. These locations
-can be adjusted using the variables in jailhouse-dirs.inc.
+can be adjusted using the variables in **jailhouse-defs.inc**.
 
-The jailhouse build system builds cell configuration (*.cell) files from the
-cell descriptions (*.c). To enable cell descriptions being defined in 
-cell recipes and imported into the jailhouse build, the jailhouse recipe
-defines a CELLS variable that lists all recipes that provide cells (and inmates)
-for the jailhouse build. Adapt the CELLS variable according to your needs, e.g.
+The jailhouse build system builds binary cell configuration (*.cell) files 
+from cell configuration sources (*.c). To allow cell configurations to be
+defined in cell recipes and imported into the jailhouse build, the jailhouse 
+recipe defines a CELLS variable that lists all recipes that provide cells (and 
+inmates) for the jailhouse build. Adapt the CELLS variable according to your 
+needs, e.g.
 
     CELLS_append = " freertos-cell"
 
@@ -110,3 +112,38 @@ as follows:
 Using this class and variables ensures that the file designated by the
 `CELLCONFIG` variable is pulled into the jailhouse build such that
 a corresponding *.cell file is created.
+
+
+Important Variables
+===================
+
+The following variables should be set in jailhouse bbappends and cell recipes
+
+`CELLCONFIG`  The name of the source cell configuration file (.c) that a cell
+recipe installs into the sysroot, for the jailhouse recipe to use to create 
+a binary configuration file. This variable should be set in a cell recipe
+using a full path e.g. `CELLCONFIG = "${S}/my/path/cell-config.c"`.
+Empty by default.
+
+`CELLS`  A list of cells that should be built with jailhouse. The jailhouse
+recipe will get dependencies to all cells listed in this variable and
+pull in their cell configuration source files to the build. Empty by default.
+
+`INMATE`  The name of the inmate binary file (.bin) that a cell recipe 
+produces. This variable should be set in a cell recipe
+using a full path e.g. `INMATE = "${B}/freertos-demo.bin"`.
+Empty by default.
+
+The following variables can be left as is
+ 
+`JH_DATADIR`  Base directory for installed jailhouse cells on target. This
+defaults to ${datadir}/jailhouse. 
+
+`CELL_DIR`  Target directory into which binary cell configuration files (.cell)
+are installed. This defaults to ${JH_DATADIR}/cells. 
+
+`CELLCONF_DIR`  Target directory into which the source cell configuration files
+(.c) are installed. Defaults to ${JH_DATADIR}/configs.
+
+`INMATES_DIR`  Target directory into which inmate binaries (.bin) are installed.
+Defaults to ${JH_DATADIR}/inmates. 
