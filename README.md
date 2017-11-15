@@ -134,6 +134,10 @@ produces. This variable should be set in a cell recipe
 using a full path e.g. `INMATE = "${B}/freertos-demo.bin"`.
 Empty by default.
 
+`JH_CONFIG` The hypervisor configuration file. This is per default taken to 
+be one of the configuration files from the ci-directory, based on the
+current architecture. Set this variable to your own configuration if needed.
+ 
 The following variables can be left as is
  
 `JH_DATADIR`  Base directory for installed jailhouse cells on target. This

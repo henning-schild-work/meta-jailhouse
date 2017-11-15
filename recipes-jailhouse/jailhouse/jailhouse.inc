@@ -17,11 +17,18 @@ S ="${WORKDIR}/git"
 require jailhouse-defs.inc
 inherit module pythonnative bash-completion
 
+JH_CONFIG ?= "${S}/ci/jailhouse-config-x86.h"
+JH_CONFIG_x86 ?= "${S}/ci/jailhouse-config-x86.h"
+JH_CONFIG_x86-64 ?= "${S}/ci/jailhouse-config-x86.h"
+JH_CONFIG_arm ?= "${S}/ci/jailhouse-config-banana-pi.h"
+
 do_configure() {
    if [ -d ${STAGING_DIR_HOST}/${CELLCONF_DIR} ]; 
    then
       cp "${STAGING_DIR_HOST}/${CELLCONF_DIR}/"*.c ${S}/configs/
    fi
+
+   cp -av ${JH_CONFIG} ${S}/hypervisor/include/jailhouse/config.h
 }
 
 USER_SPACE_CFLAGS = '${CFLAGS} -DLIBEXECDIR=\\\"${libexecdir}\\\" \
