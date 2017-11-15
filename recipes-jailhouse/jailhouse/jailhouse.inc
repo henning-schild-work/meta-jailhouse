@@ -14,11 +14,14 @@ DEPENDS = "virtual/kernel make-native python-mako-native dtc-native python-mako"
 
 S ="${WORKDIR}/git"
 
-require jailhouse-dirs.inc
+require jailhouse-defs.inc
 inherit module pythonnative bash-completion
 
 do_configure() {
-   cp "${STAGING_DIR_HOST}/${CELLCONF_DIR}/"*.c ${S}/configs/
+   if [ -d ${STAGING_DIR_HOST}/${CELLCONF_DIR} ]; 
+   then
+      cp "${STAGING_DIR_HOST}/${CELLCONF_DIR}/"*.c ${S}/configs/
+   fi
 }
 
 USER_SPACE_CFLAGS = '${CFLAGS} -DLIBEXECDIR=\\\"${libexecdir}\\\" \
@@ -53,7 +56,7 @@ do_install() {
     install ${B}/configs/*.cell ${D}${CELL_DIR}/
 
     install -d ${D}${INMATES_DIR}
-    install ${B}/inmates/demos/${TARGET_ARCH}/*.bin ${D}${INMATES_DIR}
+    install ${B}/inmates/demos/${JH_ARCH}/*.bin ${D}${INMATES_DIR}
 }
 
 PACKAGE_BEFORE_PN = "kernel-module-jailhouse"

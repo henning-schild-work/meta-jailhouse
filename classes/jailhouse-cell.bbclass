@@ -1,4 +1,4 @@
-require recipes-jailhouse/jailhouse/jailhouse-dirs.inc
+require recipes-jailhouse/jailhouse/jailhouse-defs.inc
 
 INMATE ?= ""
 CELLCONFIG ?= ""
