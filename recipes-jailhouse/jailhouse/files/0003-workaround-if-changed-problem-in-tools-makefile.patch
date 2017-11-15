@@ -1,0 +1,18 @@
+Index: git/tools/Makefile
+===================================================================
+--- git.orig/tools/Makefile
++++ git/tools/Makefile
+@@ -55,10 +55,11 @@ endef
+ targets += jailhouse.o
+ 
+ $(obj)/jailhouse: $(obj)/jailhouse.o
+-	$(call if_changed,ld)
++	$(LD) $(LDFLAGS) -o $@ $^
+ 
+ $(obj)/jailhouse-config-collect: $(src)/jailhouse-config-create $(src)/jailhouse-config-collect.tmpl
+-	$(call if_changed,gen_collect)
++	$< -g $@; \
++	chmod +x $@
+ 
+ install-bin: $(BINARIES) $(DESTDIR)$(sbindir)
+ 	$(INSTALL_PROGRAM) $^
