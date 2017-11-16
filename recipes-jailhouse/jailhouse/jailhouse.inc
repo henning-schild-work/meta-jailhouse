@@ -69,6 +69,8 @@ do_install() {
 PACKAGE_BEFORE_PN = "kernel-module-jailhouse"
 FILES_${PN} = "${base_libdir}/firmware ${libexecdir} ${sbindir} ${JH_DATADIR}"
 
+KERNEL_MODULE_AUTOLOAD += "jailhouse"
+
 python __anonymous () {
     # Setup DEPENDS and RDEPENDS to included cells"
     cells = d.getVar('CELLS', True) or ""
