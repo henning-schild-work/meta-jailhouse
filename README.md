@@ -69,8 +69,8 @@ The jailhouse inmates and cells are by default
 placed under `/usr/share/jailhouse/{inmates,cells}`. These locations
 can be adjusted using the variables in **jailhouse-defs.inc**.
 
-The jailhouse build system builds binary cell configuration (*.cell) files 
-from cell configuration sources (*.c). To allow cell configurations to be
+The jailhouse build system builds binary cell configuration (.cell) files 
+from cell configuration sources (.c). To allow cell configurations to be
 defined in cell recipes and imported into the jailhouse build, the jailhouse 
 recipe defines a CELLS variable that lists all recipes that provide cells (and 
 inmates) for the jailhouse build. Adapt the CELLS variable according to your 
@@ -78,6 +78,7 @@ needs, e.g.
 
     CELLS_append = " freertos-cell"
 
+in `local.conf`.
 With this declaration, freertos-cell entries will be added both to the
 DEPENDS and the RDEPENDS_jailhouse variables, and the jailhouse recipe will
 pull cell descriptions from the staging directory before building.
@@ -87,7 +88,7 @@ Packages produced by a jailhouse.inc based recipe
 -------------------------------------------------
 
 The Jailhouse recipes based on the file jailhouse.inc produce
-the follwing packages: 
+the following packages: 
 
 * **jailhouse**, with the `jailhouse.bin` firmware, the `jailhouse` user 
 space application, along with all inmate binaries that come with the jailhouse
@@ -113,6 +114,22 @@ Using this class and variables ensures that the file designated by the
 `CELLCONFIG` variable is pulled into the jailhouse build such that
 a corresponding *.cell file is created.
 
+Example cell
+------------
+
+An example cell recipe for the freertos-cell from Siemens is available
+under `recipes-jailhouse/freertos-cell`. To use this, set the 
+`CELLS` variable accordingly as described above.
+
+Test the cell by executing the following sequence once booted.
+
+      export JAILHOUSE_DIR=/usr/share/jailhouse
+      jailhouse enable ${JAILHOUSE_DIR}/cells/plamics-bpi-root.cell
+      jailhouse cell create ${JAILHOUSE_DIR}/cells/freertos-cell.cell
+      jailhouse cell load FreeRTOS ${JAILHOUSE_DIR}/inmates/freertos-demo.bin
+      jailhouse cell start FreeRTOS
+
+You should see output on the serial port used by the FreeRTOS inmate.
 
 Important Variables
 ===================

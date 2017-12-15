@@ -1,0 +1,22 @@
+diff --git a/Makefile b/Makefile
+index d49c25f..f9d295a 100644
+--- a/Makefile
++++ b/Makefile
+@@ -4,12 +4,12 @@ src = $(CURDIR)
+ 
+ CROSS_COMPILE ?= arm-linux-gnueabihf-
+ 
+-CC = $(CROSS_COMPILE)gcc
+-LD = $(CROSS_COMPILE)ld
+-AR = $(CROSS_COMPILE)ar
+-OBJCOPY = $(CROSS_COMPILE)objcopy
++#CC = $(CROSS_COMPILE)gcc
++#LD = $(CROSS_COMPILE)ld
++#AR = $(CROSS_COMPILE)ar
++#OBJCOPY = $(CROSS_COMPILE)objcopy
+ 
+-CFLAGS += -mcpu=cortex-a7 -mtune=cortex-a7 -mfpu=vfpv4-d16 -mfloat-abi=hard -O2
++CFLAGS += -mcpu=cortex-a7 -mtune=cortex-a7 -mfpu=vfpv4-d16 -mfloat-abi=hard -O0
+ CFLAGS += -DCONFIG_MACH_SUN7I=1
+ CFLAGS += -Wall -MMD -pipe
+ CFLAGS += -I $(src) -I $(src)/freertos/Source/include -I $(src)/freertos-runtime -I $(src)/freertos/Source/portable/GCC/ARM_A7jailhouse

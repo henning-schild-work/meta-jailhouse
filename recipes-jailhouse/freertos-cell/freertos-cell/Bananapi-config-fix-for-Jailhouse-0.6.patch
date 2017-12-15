@@ -1,0 +1,30 @@
+From 6b55388a1b2375f4deca7dbf1a974d9ce22add86 Mon Sep 17 00:00:00 2001
+From: Ola Redell <ola.redell@retotech.se>
+Date: Sat, 28 Jan 2017 23:16:06 +0100
+Subject: [PATCH 2/2] bananapi: fix for newer versions of Jailhouse
+
+---
+ jailhouse-configs/bananapi-freertos-demo.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/jailhouse-configs/bananapi-freertos-demo.c b/jailhouse-configs/bananapi-freertos-demo.c
+index f9488c5..094c387 100644
+--- a/jailhouse-configs/bananapi-freertos-demo.c
++++ b/jailhouse-configs/bananapi-freertos-demo.c
+@@ -1,4 +1,4 @@
+-#include <linux/types.h>
++#include <jailhouse/types.h>
+ #include <jailhouse/cell-config.h>
+ 
+ #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
+@@ -15,6 +15,7 @@ struct {
+ } __attribute__((packed)) config = {
+ 	.cell = {
+ 		.signature = JAILHOUSE_CELL_DESC_SIGNATURE,
++        .revision = JAILHOUSE_CONFIG_REVISION,
+ 		.name = "FreeRTOS",
+ 		.flags = JAILHOUSE_CELL_PASSIVE_COMMREG,
+ 
+-- 
+1.9.1
+

@@ -1,0 +1,60 @@
+From 1b1d05fa9e086e7161f8ef2df43874a3712ff8e0 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Anders=20T=C3=B6rnqvist?= <anders.tornqvist@retotech.se>
+Date: Fri, 27 Jan 2017 16:20:29 +0100
+Subject: [PATCH 1/2] Remove check of interrupt mask check that probably is not
+ needed in recent versions of Jailhouse. This check causes FreeRTOS to hang
+ for ever in the while loop. The commit in Jailhouse that is close to this is
+ 902ee9cfd32652f6926da709b259d46a68bdebf4
+
+---
+ .../Source/portable/GCC/ARM_A7jailhouse/port.c     | 34 ----------------------
+ 1 file changed, 34 deletions(-)
+
+diff --git a/freertos/Source/portable/GCC/ARM_A7jailhouse/port.c b/freertos/Source/portable/GCC/ARM_A7jailhouse/port.c
+index dd739c3..6084939 100644
+--- a/freertos/Source/portable/GCC/ARM_A7jailhouse/port.c
++++ b/freertos/Source/portable/GCC/ARM_A7jailhouse/port.c
+@@ -323,40 +323,6 @@ BaseType_t xPortStartScheduler( void )
+ {
+   uint32_t ulAPSR;
+ 
+-	#if( configASSERT_DEFINED == 1 )
+-	{
+-		volatile uint32_t ulOriginalPriority;
+-		volatile uint8_t * const pucFirstUserPriorityRegister = ( volatile uint8_t * const ) ( gic_v2_gicd_get_address() + portINTERRUPT_PRIORITY_REGISTER_OFFSET );
+-		volatile uint8_t ucMaxPriorityValue;
+-
+-		/* Determine how many priority bits are implemented in the GIC.
+-
+-		Save the interrupt priority value that is about to be clobbered. */
+-		ulOriginalPriority = *pucFirstUserPriorityRegister;
+-
+-		/* Determine the number of priority bits available.  First write to
+-		all possible bits. */
+-		*pucFirstUserPriorityRegister = portMAX_8_BIT_VALUE;
+-
+-		/* Read the value back to see how many bits stuck. */
+-		ucMaxPriorityValue = *pucFirstUserPriorityRegister;
+-
+-		/* Shift to the least significant bits. */
+-		while( ( ucMaxPriorityValue & portBIT_0_SET ) != portBIT_0_SET )
+-		{
+-			ucMaxPriorityValue >>= ( uint8_t ) 0x01;
+-		}
+-
+-		/* Sanity check configUNIQUE_INTERRUPT_PRIORITIES matches the read
+-		value. */
+-		configASSERT( ucMaxPriorityValue == portLOWEST_INTERRUPT_PRIORITY );
+-
+-		/* Restore the clobbered interrupt priority register to its original
+-		value. */
+-		*pucFirstUserPriorityRegister = ulOriginalPriority;
+-	}
+-	#endif /* conifgASSERT_DEFINED */
+-
+   ulICCIAR = ulICCEOIR = ulICCPMR = (uint32_t) gic_v2_gicc_get_address();
+   ulICCIAR  += portICCIAR_INTERRUPT_ACKNOWLEDGE_OFFSET;
+   ulICCEOIR += portICCEOIR_END_OF_INTERRUPT_OFFSET;
+-- 
+1.9.1
+
