@@ -17,6 +17,10 @@ This layer depends on:
   layers: meta
   branch: master
 
+  URI: 	https://github.com/linux-sunxi/meta-sunxi
+  branch: master
+  tested with 7f88e6c78e7014960654c8f4b3bb0c4e188f0f43
+
 
 Maintainers
 ===========
@@ -35,6 +39,7 @@ Tested with
 * Yocto 2.2
 * This layer has been developed for and tested with Bananapi M1 as target.
 No other targets have been used thus far.
+* meta-sunxi, 7f88e6c78e7014960654c8f4b3bb0c4e188f0f43
 
 
 Adding the jailhouse layer to your build
@@ -114,23 +119,6 @@ Using this class and variables ensures that the file designated by the
 `CELLCONFIG` variable is pulled into the jailhouse build such that
 a corresponding *.cell file is created.
 
-Example cell
-------------
-
-An example cell recipe for the freertos-cell from Siemens is available
-under `recipes-jailhouse/freertos-cell`. To use this, set the 
-`CELLS` variable accordingly as described above.
-
-Test the cell by executing the following sequence once booted.
-
-      export JAILHOUSE_DIR=/usr/share/jailhouse
-      jailhouse enable ${JAILHOUSE_DIR}/cells/bananapi.cell
-      jailhouse cell create ${JAILHOUSE_DIR}/cells/freertos-cell.cell
-      jailhouse cell load FreeRTOS ${JAILHOUSE_DIR}/inmates/freertos-demo.bin
-      jailhouse cell start FreeRTOS
-
-You should see output on the serial port used by the FreeRTOS inmate.
-
 Important Variables
 ===================
 
@@ -168,3 +156,28 @@ are installed. This defaults to ${JH_DATADIR}/cells.
 
 `INMATES_DIR`  Target directory into which inmate binaries (.bin) are installed.
 Defaults to ${JH_DATADIR}/inmates. 
+
+Example image
+=============
+
+Build the example image `jailhouse-image` using the included machine
+configuration `jailhouse-bpi` together with the provided kernel recipe:
+
+     MACHINE=jailhouse-bpi bitbake jailhouse-image
+
+Example cell
+------------
+
+An example cell recipe for the freertos-cell from Siemens is available
+under `recipes-jailhouse/freertos-cell`. To use this, set the 
+`CELLS` variable accordingly as described above.
+
+Test the cell by executing the following sequence once booted.
+
+      export JAILHOUSE_DIR=/usr/share/jailhouse
+      jailhouse enable ${JAILHOUSE_DIR}/cells/bananapi.cell
+      jailhouse cell create ${JAILHOUSE_DIR}/cells/freertos-cell.cell
+      jailhouse cell load FreeRTOS ${JAILHOUSE_DIR}/inmates/freertos-demo.bin
+      jailhouse cell start FreeRTOS
+
+You should see output on the serial port used by the FreeRTOS inmate.
