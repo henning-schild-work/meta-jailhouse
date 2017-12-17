@@ -1,0 +1,9 @@
+diff -Nur linux-4.14.6_orig/lib/ioremap.c linux-4.14.6/lib/ioremap.c
+--- linux-4.14.6_orig/lib/ioremap.c	2017-12-14 09:53:15.000000000 +0100
++++ linux-4.14.6/lib/ioremap.c	2017-12-14 17:20:45.906872824 +0100
+@@ -179,3 +179,5 @@
+ 
+ 	return err;
+ }
++
++EXPORT_SYMBOL_GPL(ioremap_page_range);
