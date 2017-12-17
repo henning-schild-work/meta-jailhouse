@@ -22,8 +22,8 @@ Maintainers
 ===========
 
 * Ola Redell <ola@retotech.se>
-* Anders TÃ¶rnqvist <anders@retotech.se>
-* Jonas WestÃ¥ker <jonas@retotech.se>
+* Anders Törnqvist <anders@retotech.se>
+* Jonas Weståker <jonas@retotech.se>
 
 Please submit any patches against this jailhouse layer
 via email or https://bitbucket.org/retotech/meta-jailhouse
@@ -76,7 +76,7 @@ recipe defines a CELLS variable that lists all recipes that provide cells (and
 inmates) for the jailhouse build. Adapt the CELLS variable according to your 
 needs, e.g.
 
-    CELLS_append = " freertos-cell"
+    CELLS_pn-jailhouse = "freertos-cell"
 
 in `local.conf`.
 With this declaration, freertos-cell entries will be added both to the
@@ -124,7 +124,7 @@ under `recipes-jailhouse/freertos-cell`. To use this, set the
 Test the cell by executing the following sequence once booted.
 
       export JAILHOUSE_DIR=/usr/share/jailhouse
-      jailhouse enable ${JAILHOUSE_DIR}/cells/plamics-bpi-root.cell
+      jailhouse enable ${JAILHOUSE_DIR}/cells/bananapi.cell
       jailhouse cell create ${JAILHOUSE_DIR}/cells/freertos-cell.cell
       jailhouse cell load FreeRTOS ${JAILHOUSE_DIR}/inmates/freertos-demo.bin
       jailhouse cell start FreeRTOS
