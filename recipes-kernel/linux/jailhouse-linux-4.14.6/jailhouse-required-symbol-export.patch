@@ -1,0 +1,20 @@
+diff --git a/arch/arm/kernel/armksyms.c b/arch/arm/kernel/armksyms.c
+index 7e45f69..dc0336e 100644
+--- a/arch/arm/kernel/armksyms.c
++++ b/arch/arm/kernel/armksyms.c
+@@ -20,6 +20,7 @@
+
+ #include <asm/checksum.h>
+ #include <asm/ftrace.h>
++#include <asm/virt.h>
+
+ /*
+  * libgcc functions - functions that are used internally by the
+@@ -181,3 +182,7 @@ EXPORT_SYMBOL(__pv_offset);
+ EXPORT_SYMBOL(arm_smccc_smc);
+ EXPORT_SYMBOL(arm_smccc_hvc);
+ #endif
++
++#ifdef CONFIG_ARM_VIRT_EXT
++EXPORT_SYMBOL_GPL(__boot_cpu_mode);
++#endif
