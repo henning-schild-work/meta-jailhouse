@@ -12,3 +12,4 @@ PV = "0.7-git${SRCPV}"
 
 CELLS = ""
 
+DEFAULT_PREFERENCE = "-1"
