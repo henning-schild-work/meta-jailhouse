@@ -5,7 +5,7 @@ SRC_URI = "git://github.com/siemens/jailhouse.git;protocol=git \
 	  file://0005-tools-makefile.patch \
 	"
 
-SRCREV = "5c13b6409b6088ab717e8af444e11839868302eb"
+SRCREV = "07341fa315a7fabb38f07cd3c0b3fe880cffaa65"
 
 CELLS = ""
 

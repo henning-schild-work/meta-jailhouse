@@ -1,6 +1,6 @@
 require jailhouse.inc
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}-0.7:"
+FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}-git:"
 
 SRC_URI = "git://github.com/siemens/jailhouse.git;protocol=git \
 	  file://0004-no-kbuild-of-tools.patch \
@@ -8,7 +8,7 @@ SRC_URI = "git://github.com/siemens/jailhouse.git;protocol=git \
 	"
 
 SRCREV = "${AUTOREV}"
-PV = "0.7-git${SRCPV}"
+PV = "0.8-git${SRCPV}"
 
 CELLS = ""
 
