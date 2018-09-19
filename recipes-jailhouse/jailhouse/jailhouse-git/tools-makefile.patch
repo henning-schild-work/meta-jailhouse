@@ -2,16 +2,16 @@ Index: git/tools/Makefile
 ===================================================================
 --- git.orig/tools/Makefile
 +++ git/tools/Makefile
-@@ -19,7 +19,7 @@ LINUXINCLUDE := -I$(src)/../driver
- KBUILD_CFLAGS := -g -O3 -DLIBEXECDIR=\"$(libexecdir)\" \
- 	-Wall -Wextra -Wmissing-declarations -Wmissing-prototypes -Werror \
+@@ -23,7 +23,7 @@ KBUILD_CFLAGS := -g -O3 -DLIBEXECDIR=\"$
+ 	-D__LINUX_COMPILER_TYPES_H \
  	-DJAILHOUSE_VERSION=\"$(shell cat $(src)/../VERSION)\" $(EXTRA_CFLAGS)
+ # prior to 4.19
 -LDFLAGS :=
-+
- GCOV_PROFILE := n
++#LDFLAGS :=
+ # since 4.19
+ KBUILD_LDFLAGS :=
  
- BINARIES := jailhouse
-@@ -57,7 +57,7 @@ endef
+@@ -101,7 +101,7 @@ endef
  targets += jailhouse.o
  
  $(obj)/jailhouse: $(obj)/jailhouse.o
@@ -20,7 +20,7 @@ Index: git/tools/Makefile
  
  CFLAGS_jailhouse-gcov-extract.o	:= -I$(src)/../hypervisor/include \
  	-I$(src)/../hypervisor/arch/$(SRCARCH)/include
-@@ -68,10 +68,11 @@ targets += jailhouse-gcov-extract.o
+@@ -112,10 +112,11 @@ targets += jailhouse-gcov-extract.o
  always += jailhouse-gcov-extract
  
  $(obj)/jailhouse-gcov-extract: $(obj)/jailhouse-gcov-extract.o
@@ -32,5 +32,5 @@ Index: git/tools/Makefile
 +	$< -g $@; \
 +	chmod +x $@
  
- install-bin: $(BINARIES) $(DESTDIR)$(sbindir)
- 	$(INSTALL_PROGRAM) $^
+ targets += $(MAN8_PAGES)
+ always +=  $(MAN8_PAGES)

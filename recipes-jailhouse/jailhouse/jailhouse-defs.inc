@@ -22,4 +22,4 @@ def map_jh_arch(a, d):
     else:
         bb.error("cannot map '%s' to a jailhouse supported architecture" % a)
 
-export JH_ARCH = "${@map_jh_arch(d.getVar('TARGET_ARCH', True), d)}"
+JH_ARCH = "${@map_jh_arch(d.getVar('TARGET_ARCH', True), d)}"

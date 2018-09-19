@@ -35,34 +35,42 @@ do_configure() {
 
 USER_SPACE_CFLAGS = '${CFLAGS} -DLIBEXECDIR=\\\"${libexecdir}\\\" \
 		  -DJAILHOUSE_VERSION=\\\"$JAILHOUSE_VERSION\\\" \
-		  -Wall -Wextra -Wmissing-declarations -Wmissing-prototypes -Werror \
+		  -Wall -Wextra -Wmissing-declarations -Wmissing-prototypes \
+                  -Werror -D__LINUX_COMPILER_TYPES_H \
 		  -I../driver'
 
 TOOLS_SRC_DIR = "${S}/tools"
 TOOLS_OBJ_DIR = "${S}/tools"
 
+export LDFLAGS = ""
+
 do_compile() {
-   oe_runmake V=0 \
-        ARCH=${TARGET_ARCH} CROSS_COMPILE=${TARGET_PREFIX} \
+   oe_runmake V=1 \
+        ARCH=${JH_ARCH} CROSS_COMPILE=${TARGET_PREFIX} \
         KDIR=${STAGING_KERNEL_BUILDDIR}
 
    cd ${TOOLS_SRC_DIR}
    export JAILHOUSE_VERSION=$(cat ../VERSION)
-   oe_runmake V=0 \
+   oe_runmake V=1 \
    	       CFLAGS="${USER_SPACE_CFLAGS}" \
                src=${TOOLS_SRC_DIR} obj=${TOOLS_OBJ_DIR} \
-	       ${TOOLS_OBJ_DIR}/jailhouse-config-collect ${TOOLS_OBJ_DIR}/jailhouse
+                ${TOOLS_OBJ_DIR}/jailhouse-cell-linux \
+	        ${TOOLS_OBJ_DIR}/jailhouse-cell-stats \
+	       ${TOOLS_OBJ_DIR}/jailhouse-config-collect \
+               ${TOOLS_OBJ_DIR}/jailhouse.8 ${TOOLS_OBJ_DIR}/jailhouse-cell.8 \
+               ${TOOLS_OBJ_DIR}/jailhouse-enable.8 \
+               ${TOOLS_OBJ_DIR}/jailhouse
 }
 
 do_install() {
     oe_runmake \
-	       ARCH=${TARGET_ARCH} \
+	       ARCH=${JH_ARCH} \
 	       CROSS_COMPILE=${TARGET_PREFIX} \
 	       KDIR=${STAGING_KERNEL_BUILDDIR} \
 	       DESTDIR=${D} install
 
     install -d ${D}${CELL_DIR}
-    install ${B}/configs/*.cell ${D}${CELL_DIR}/
+    install ${B}/configs/${JH_ARCH}/*.cell ${D}${CELL_DIR}/
 
     install -d ${D}${INMATES_DIR}
     install ${B}/inmates/demos/${JH_ARCH}/*.bin ${D}${INMATES_DIR}

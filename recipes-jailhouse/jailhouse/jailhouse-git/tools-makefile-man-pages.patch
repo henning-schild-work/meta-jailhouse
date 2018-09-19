@@ -1,0 +1,13 @@
+Index: git/tools/Makefile
+===================================================================
+--- git.orig/tools/Makefile
++++ git/tools/Makefile
+@@ -122,7 +122,7 @@ targets += $(MAN8_PAGES)
+ always +=  $(MAN8_PAGES)
+ 
+ $(obj)/%.8: $(src)/%.8.in
+-	$(call if_changed,gen_man)
++	sed 's/$${VERSION}/$(shell cat $(src)/../VERSION)/g' $< > $@
+ 
+ install-bin: $(BINARIES) $(DESTDIR)$(sbindir)
+ 	$(INSTALL_PROGRAM) $^
