@@ -68,6 +68,9 @@ do_install() {
 
     install -d ${D}${INMATES_DIR}
     install ${B}/inmates/demos/${ARCH}/*.bin ${D}${INMATES_DIR}
+
+    install -d ${D}${DTBS_DIR}
+    install ${B}/configs/${ARCH}/dts/*.dtb ${D}${DTBS_DIR}/
 }
 
 PACKAGE_BEFORE_PN = "kernel-module-jailhouse"
