@@ -17,7 +17,7 @@ DEPENDS = "virtual/kernel make-native python-mako-native dtc-native python-mako"
 S ="${WORKDIR}/git"
 
 require jailhouse-defs.inc
-inherit module pythonnative bash-completion
+inherit module pythonnative bash-completion kernel-arch
 
 JH_CONFIG ?= "${S}/ci/jailhouse-config-x86.h"
 JH_CONFIG_x86 ?= "${S}/ci/jailhouse-config-x86.h"
@@ -46,7 +46,7 @@ TOOLS_OBJ_DIR = "${S}/tools"
 
 do_compile() {
    oe_runmake V=0 \
-        ARCH=${TARGET_ARCH} CROSS_COMPILE=${TARGET_PREFIX} \
+        CROSS_COMPILE=${TARGET_PREFIX} \
         KDIR=${STAGING_KERNEL_BUILDDIR}
 
    cd ${TOOLS_SRC_DIR}
@@ -59,7 +59,6 @@ do_compile() {
 
 do_install() {
     oe_runmake \
-	       ARCH=${TARGET_ARCH} \
 	       CROSS_COMPILE=${TARGET_PREFIX} \
 	       KDIR=${STAGING_KERNEL_BUILDDIR} \
 	       DESTDIR=${D} install
@@ -68,7 +67,7 @@ do_install() {
     install ${B}/configs/*.cell ${D}${CELL_DIR}/
 
     install -d ${D}${INMATES_DIR}
-    install ${B}/inmates/demos/${JH_ARCH}/*.bin ${D}${INMATES_DIR}
+    install ${B}/inmates/demos/${ARCH}/*.bin ${D}${INMATES_DIR}
 }
 
 PACKAGE_BEFORE_PN = "kernel-module-jailhouse"
